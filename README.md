@@ -1,13 +1,30 @@
----
-title: Golang使用grpc指南
-date: 2020-09-04
-tags: [protobuf, grpc, grpc-gateway, RestApi]
-categories: [编程, Golang, libs&framworks]
-type: DEMO
-
----
 # Golang使用 grpc 指南
-[toc]
+
+Table of Contents
+=================
+
+   * [Golang使用 grpc 指南](#golang使用-grpc-指南)
+      * [使用protobuf](#使用protobuf)
+         * [编写proto文件](#编写proto文件)
+         * [下载protoc工具](#下载protoc工具)
+         * [下载protoc插件: protoc-gen-go](#下载protoc插件-protoc-gen-go)
+         * [编译](#编译)
+         * [使用](#使用)
+      * [使用grpc](#使用grpc)
+         * [编写proto文件](#编写proto文件-1)
+         * [下载protoc插件: protoc-gen-go-grpc](#下载protoc插件-protoc-gen-go-grpc)
+         * [编译](#编译-1)
+         * [实现接口](#实现接口)
+         * [使用](#使用-1)
+      * [使用grpc-gateway](#使用grpc-gateway)
+         * [修改operations.proto](#修改operationsproto)
+         * [下载 protoc-gen-grpc-gateway](#下载-protoc-gen-grpc-gateway)
+         * [编译](#编译-2)
+         * [使用](#使用-2)
+      * [gateway 与 grpc 使用相同的端口(使用TLS)](#gateway-与-grpc-使用相同的端口使用tls)
+      * [gateway 与 grpc 使用相同的端口(不使用TLS)](#gateway-与-grpc-使用相同的端口不使用tls)
+
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 本文以一个简单的CURD服务为例演示了如果一步步使用grpc的接口. 
 
