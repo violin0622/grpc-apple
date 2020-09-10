@@ -1,0 +1,68 @@
+syntax = "proto3";
+package operation;
+option go_package="github.com/violin0622/grpc-apple/api/operation";
+// 引入protobuf官方提供的Empty结构作为部分接口的空返回值. 
+import "google/protobuf/empty.proto";
+// 引入protobuf官方提供的Field_Mask用于支持修改操作. 
+import "google/protobuf/field_mask.proto";
+// 引入annotation用于定义gateway
+import "google/api/annotations.proto";
+// 引入上级目录的apple文件以复用定义
+import "api/apple.proto";
+
+service AppleService{
+  rpc DescribeApple(DescribeAppleRequest) returns (api.Apple) {
+    option (google.api.http).get = "/apples/{number}";
+  }
+  rpc CreateApple(CreateAppleRequest) returns (api.Apple) {
+    option (google.api.http) = {
+      post: "/apples"
+      body: "*"
+    };
+  }
+  rpc UpdateApple(UpdateAppleRequest) returns (api.Apple) {
+    option (google.api.http) = {
+      put: "/apples/{number}"
+      body: "*"
+    };
+  }
+  rpc ModifyApple(ModifyAppleRequest) returns (api.Apple) {
+    option (google.api.http) = {
+      patch: "/apples/{number}"
+      body: "*"
+    };
+  }
+  rpc DestroyApple(DestroyAppleRequest) returns (google.protobuf.Empty) {
+    option (google.api.http).delete = "/apples/{number}";
+  }
+}
+
+// 为了提供调用接口, 我们新声明了五个消息类型, 需要定义. 
+message DescribeAppleRequest{
+  int32 number = 1;
+}
+message CreateAppleRequest{
+  string name = 2;
+  api.Apple.Size size = 3;
+}
+// 更新操作: 必须指定对象全部的属性, 
+// 对于未指定的属性, 应该将其设定为空或默认值; 
+message UpdateAppleRequest{
+  int32 number = 1;
+  string name = 2;
+  api.Apple.Size size = 3;
+}
+// 修改操作: 只需要设定对象需要变更的属性, 
+// 对于未指定的属性, 会保留原来的值. 
+// grpc中为了支持修改操作, 需要添加额外的FieldMask字段. 
+// 不过好在该字段的值不需要用户设定, grpc会自动生成. 
+message ModifyAppleRequest{
+  int32 number = 1;
+  string name = 2;
+  api.Apple.Size size = 3;
+  google.protobuf.FieldMask mask = 4;
+}
+
+message DestroyAppleRequest{
+  int32 number = 1;
+}

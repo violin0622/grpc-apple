@@ -1,0 +1,16 @@
+syntax = "proto3";
+package api;
+option go_package="github.com/violin0622/grpc-apple/api";
+
+message Apple{
+  int32 number = 1;
+  string name = 2;
+  Size size = 3;
+
+  enum Size{
+    SIZE_UNDEFINED = 0;
+    BIG = 4;
+    MID = 5;
+    SMALL = 6;
+  }
+}
